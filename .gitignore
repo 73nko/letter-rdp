@@ -1,2 +1,21 @@
+# Environment Configuration
+.env
+.env.local
+# Dependency directory
 node_modules
-package-lock.json
+
+# Ignore Apple macOS Desktop Services Store
+.DS_Store
+
+# Logs
+logs
+*.log
+
+# dev
+config.yml
+.eslintcache
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
