@@ -1,0 +1,26 @@
+{
+  "name": "letter-rdp",
+  "version": "1.0.0",
+  "description": "A Simple JS parser",
+  "main": "./src/Parser.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/73nko/letter-rdp.git"
+  },
+  "keywords": [
+    "js",
+    "parser"
+  ],
+  "author": "73nko <apramos89@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/73nko/letter-rdp/issues"
+  },
+  "homepage": "https://github.com/73nko/letter-rdp#readme",
+  "devDependencies": {
+    "jest": "^27.2.5"
+  }
+}
