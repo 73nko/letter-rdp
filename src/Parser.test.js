@@ -27,3 +27,17 @@ test("should return an AST StringLiteral object", () => {
     },
   });
 });
+
+test("should return an AST StringLiteral object", () => {
+  const parser = new Parser();
+  const program = `'hello'`;
+  const ast = parser.parse(program);
+
+  expect(ast).toEqual({
+    type: "Program",
+    body: {
+      type: "StringLiteral",
+      value: "hello",
+    },
+  });
+});

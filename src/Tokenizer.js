@@ -52,6 +52,15 @@ class Tokenizer {
       };
     }
 
+    matched = /^'([^']*)'/.exec(string);
+    if (matched) {
+      this._cursor += matched[0].length;
+      return {
+        type: "String",
+        value: matched[0],
+      };
+    }
+
     return null;
   }
 }
