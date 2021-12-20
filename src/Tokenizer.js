@@ -8,19 +8,19 @@ class Tokenizer {
    * Initializes the string.
    */
   init(string) {
-    this._string = string;
-    this._cursor = 0;
+    this._string = string
+    this._cursor = 0
   }
 
   isEOF() {
-    return this._cursor === this._string.length;
+    return this._cursor === this._string.length
   }
 
   /**
    * Whether we still have more tokens.
    */
   hasMoreTokens() {
-    return this._cursor < this._string.length;
+    return this._cursor < this._string.length
   }
 
   /**
@@ -28,43 +28,43 @@ class Tokenizer {
    */
   getNextToken() {
     if (!this.hasMoreTokens()) {
-      return null;
+      return null
     }
 
-    const string = this._string.slice(this._cursor);
+    const string = this._string.slice(this._cursor)
 
-    let matched = /^\d+/.exec(string);
+    let matched = /^\d+/.exec(string)
     if (matched) {
-      this._cursor += matched[0].length;
+      this._cursor += matched[0].length
       return {
         type: "Number",
         value: matched[0],
-      };
+      }
     }
 
     // String
-    matched = /^"([^"]*)"/.exec(string);
+    matched = /^"([^"]*)"/.exec(string)
     if (matched) {
-      this._cursor += matched[0].length;
+      this._cursor += matched[0].length
       return {
         type: "String",
         value: matched[0],
-      };
+      }
     }
 
-    matched = /^'([^']*)'/.exec(string);
+    matched = /^'([^']*)'/.exec(string)
     if (matched) {
-      this._cursor += matched[0].length;
+      this._cursor += matched[0].length
       return {
         type: "String",
         value: matched[0],
-      };
+      }
     }
 
-    return null;
+    return null
   }
 }
 
 module.exports = {
   Tokenizer,
-};
+}

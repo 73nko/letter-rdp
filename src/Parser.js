@@ -1,4 +1,4 @@
-const { Tokenizer } = require("./Tokenizer");
+const { Tokenizer } = require("./Tokenizer")
 
 /**
  * Letter Parser: Recursive descent implementation of the parser.
@@ -6,8 +6,8 @@ const { Tokenizer } = require("./Tokenizer");
 
 class Parser {
   constructor() {
-    this._string = "";
-    this._tokenizer = new Tokenizer();
+    this._string = ""
+    this._tokenizer = new Tokenizer()
   }
 
   /**
@@ -16,18 +16,18 @@ class Parser {
    * @return {AST} - The AST.
    */
   parse(string) {
-    this._string = string;
-    this._tokenizer.init(string);
+    this._string = string
+    this._tokenizer.init(string)
 
     // Prime the _tokenize to obtain the first token.
     // token which is our _lookahead. The lookahead is
     // used for predictive parsing.
 
-    this._lookahead = this._tokenizer.getNextToken();
+    this._lookahead = this._tokenizer.getNextToken()
 
     // Parse recursively starting from the main
     // entry point of the program.
-    return this.Program();
+    return this.Program()
   }
 
   /**
@@ -40,7 +40,7 @@ class Parser {
     return {
       type: "Program",
       body: this.Literal(),
-    };
+    }
   }
 
   /**
@@ -51,20 +51,20 @@ class Parser {
   Literal() {
     switch (this._lookahead.type) {
       case "Number":
-        return this.NumericalLiteral();
+        return this.NumericalLiteral()
       case "String":
-        return this.StringLiteral();
+        return this.StringLiteral()
       default:
-        throw new Error(`Unexpected token: ${this._lookahead.type}`);
+        throw new Error(`Unexpected token: ${this._lookahead.type}`)
     }
   }
 
   StringLiteral() {
-    const token = this._eat("String");
+    const token = this._eat("String")
     return {
       type: "StringLiteral",
       value: token.value.slice(1, -1),
-    };
+    }
   }
 
   /**
@@ -72,28 +72,28 @@ class Parser {
    * : Number
    */
   NumericalLiteral() {
-    const token = this._eat("Number");
+    const token = this._eat("Number")
     return {
       type: "NumericalLiteral",
       value: Number(token.value),
-    };
+    }
   }
 
   _eat(type) {
-    const token = this._lookahead;
+    const token = this._lookahead
     if (token == null) {
-      throw new Error(`Unexpected end of input, expected: ${type}`);
+      throw new Error(`Unexpected end of input, expected: ${type}`)
     }
 
     if (token.type !== type) {
-      throw new Error(`Unexpected token: ${token.type}, expected: ${type}`);
+      throw new Error(`Unexpected token: ${token.type}, expected: ${type}`)
     }
 
-    this._lookahead = this._tokenizer.getNextToken();
-    return token;
+    this._lookahead = this._tokenizer.getNextToken()
+    return token
   }
 }
 
 module.exports = {
   Parser,
-};
+}
