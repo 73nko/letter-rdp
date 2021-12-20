@@ -34,12 +34,36 @@ class Parser {
    * Main entry point for the parser.
    *
    * Program
-   *  : NumericalLiteral
+   *  : Literal
    */
   Program() {
     return {
       type: "Program",
-      body: this.NumericalLiteral(),
+      body: this.Literal(),
+    };
+  }
+
+  /**
+   * Literal
+   * : NumericalLiteral
+   * | StringLiteral
+   */
+  Literal() {
+    switch (this._lookahead.type) {
+      case "Number":
+        return this.NumericalLiteral();
+      case "String":
+        return this.StringLiteral();
+      default:
+        throw new Error(`Unexpected token: ${this._lookahead.type}`);
+    }
+  }
+
+  StringLiteral() {
+    const token = this._eat("String");
+    return {
+      type: "StringLiteral",
+      value: token.value.slice(1, -1),
     };
   }
 

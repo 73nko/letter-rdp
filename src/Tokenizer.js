@@ -12,6 +12,10 @@ class Tokenizer {
     this._cursor = 0;
   }
 
+  isEOF() {
+    return this._cursor === this._string.length;
+  }
+
   /**
    * Whether we still have more tokens.
    */
@@ -29,16 +33,26 @@ class Tokenizer {
 
     const string = this._string.slice(this._cursor);
 
-    if (!Number.isNaN(string[0])) {
-      let number = "";
-      while (!Number.isNaN(Number(string[this._cursor]))) {
-        number += string[this._cursor++];
-      }
+    let matched = /^\d+/.exec(string);
+    if (matched) {
+      this._cursor += matched[0].length;
       return {
         type: "Number",
-        value: number,
+        value: matched[0],
       };
     }
+
+    // String
+    matched = /^"([^"]*)"/.exec(string);
+    if (matched) {
+      this._cursor += matched[0].length;
+      return {
+        type: "String",
+        value: matched[0],
+      };
+    }
+
+    return null;
   }
 }
 
