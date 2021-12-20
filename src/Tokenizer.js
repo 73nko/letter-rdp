@@ -3,9 +3,17 @@
  */
 
 const Spec = [
+  // Whitespace
   [/^\s+/, null],
+
+  // Comments
+  [/^\/\*[\s\S]*?\*\//, null],
   [/^\/\/.*/, null],
+
+  // Numbers
   [/^\d+/, "Number"],
+
+  // Strings
   [/^"([^"]*)"/, "String"],
   [/^'([^']*)'/, "String"],
 ]

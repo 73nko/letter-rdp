@@ -72,3 +72,23 @@ test("should return an AST StringLiteral object with comments", () => {
     },
   })
 })
+
+test("should return an AST StringLiteral object with multiline comments", () => {
+  const parser = new Parser()
+  const program = `
+  /*
+  * test comments:
+  */
+
+  'hello'
+`
+  const ast = parser.parse(program)
+
+  expect(ast).toEqual({
+    type: "Program",
+    body: {
+      type: "StringLiteral",
+      value: "hello",
+    },
+  })
+})
