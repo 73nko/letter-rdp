@@ -31,6 +31,13 @@ class Tokenizer {
 
     if (!Number.isNaN(string[0])) {
       let number = "";
+      while (!Number.isNaN(Number(string[this._cursor]))) {
+        number += string[this._cursor++];
+      }
+      return {
+        type: "Number",
+        value: number,
+      };
     }
   }
 }
