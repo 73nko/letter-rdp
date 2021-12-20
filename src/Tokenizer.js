@@ -1,4 +1,16 @@
 /**
+ * Tokenizer spec
+ */
+
+const Spec = [
+  [/^\s+/, null],
+  [/^\/\/.*/, null],
+  [/^\d+/, "Number"],
+  [/^"([^"]*)"/, "String"],
+  [/^'([^']*)'/, "String"],
+]
+
+/**
  * Tokenizer class
  *
  * Lazily pulls a token from a stream.
@@ -33,35 +45,27 @@ class Tokenizer {
 
     const string = this._string.slice(this._cursor)
 
-    let matched = /^\d+/.exec(string)
-    if (matched) {
-      this._cursor += matched[0].length
+    for (const [regex, type] of Spec) {
+      const tokenValue = this._match(regex, string)
+      if (!tokenValue) continue
+      if (type == null) return this.getNextToken()
+
       return {
-        type: "Number",
-        value: matched[0],
+        type,
+        value: tokenValue,
       }
     }
+    throw new SyntaxError(`Unexpected token: ${string[0]}`)
+  }
 
-    // String
-    matched = /^"([^"]*)"/.exec(string)
-    if (matched) {
-      this._cursor += matched[0].length
-      return {
-        type: "String",
-        value: matched[0],
-      }
+  _match(regexp, string) {
+    let matched = regexp.exec(string)
+
+    if (!matched) {
+      return null
     }
-
-    matched = /^'([^']*)'/.exec(string)
-    if (matched) {
-      this._cursor += matched[0].length
-      return {
-        type: "String",
-        value: matched[0],
-      }
-    }
-
-    return null
+    this._cursor += matched[0].length
+    return matched[0]
   }
 }
 

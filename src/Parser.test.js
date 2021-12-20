@@ -41,3 +41,34 @@ test("should return an AST StringLiteral object", () => {
     },
   })
 })
+
+test("should return an AST StringLiteral object even with white spaces", () => {
+  const parser = new Parser()
+  const program = "  'hello'   "
+  const ast = parser.parse(program)
+
+  expect(ast).toEqual({
+    type: "Program",
+    body: {
+      type: "StringLiteral",
+      value: "hello",
+    },
+  })
+})
+
+test("should return an AST StringLiteral object with comments", () => {
+  const parser = new Parser()
+  const program = `
+  // test comments:
+  'hello'
+`
+  const ast = parser.parse(program)
+
+  expect(ast).toEqual({
+    type: "Program",
+    body: {
+      type: "StringLiteral",
+      value: "hello",
+    },
+  })
+})
