@@ -48,10 +48,10 @@ class Parser {
    * : Statement
    * | StatementList Statement;
    */
-  StatementList() {
+  StatementList(stopLookahead = null) {
     const statementList = [this.Statement()]
 
-    while (this._lookahead != null) {
+    while (this._lookahead != null && this._lookahead.type !== stopLookahead) {
       statementList.push(this.Statement())
     }
 
@@ -60,10 +60,35 @@ class Parser {
 
   /**
    * Statement
-   *  : ExpressionStatement;
+   *  : ExpressionStatement
+   * | BlockStatement
    */
   Statement() {
-    return this.ExpressionStatement()
+    switch (this._lookahead.type) {
+      case this._tokenizer.TokenType.CURLY_OPEN:
+        return this.BlockStatement()
+      default:
+        return this.ExpressionStatement()
+    }
+  }
+
+  /**
+   * BlockStatement
+   *  : '{' StatementList '}'
+   */
+  BlockStatement() {
+    this._eat(this._tokenizer.TokenType.CURLY_OPEN)
+
+    const body =
+      this._lookahead.type != this._tokenizer.TokenType.CURLY_CLOSE
+        ? this.StatementList(this._tokenizer.TokenType.CURLY_CLOSE)
+        : []
+
+    this._eat(this._tokenizer.TokenType.CURLY_CLOSE)
+    return {
+      type: "BlockStatement",
+      body,
+    }
   }
 
   /**

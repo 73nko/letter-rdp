@@ -12,6 +12,8 @@ const Spec = [
 
   // Symbols
   [/^;/, ";"],
+  [/^{/, "{"],
+  [/^}/, "}"],
 
   // Numbers
   [/^\d+/, "Number"],
@@ -33,7 +35,10 @@ class Tokenizer {
     NUMBER: "Number",
     STRING: "String",
     SEMICOLON: ";",
+    CURLY_OPEN: "{",
+    CURLY_CLOSE: "}",
   }
+
   /**
    * Initializes the string.
    */

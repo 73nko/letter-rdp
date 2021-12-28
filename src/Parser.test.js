@@ -158,3 +158,40 @@ test("A program with multiple statements", () => {
     ],
   })
 })
+
+test("A program with a blockStatement", () => {
+  const parser = new Parser()
+  const program = `
+  {
+    42;
+    'hello';
+  }
+
+`
+  const ast = parser.parse(program)
+
+  expect(ast).toEqual({
+    type: "Program",
+    body: [
+      {
+        type: "BlockStatement",
+        body: [
+          {
+            type: "ExpressionStatement",
+            expression: {
+              type: "NumericalLiteral",
+              value: 42,
+            },
+          },
+          {
+            type: "ExpressionStatement",
+            expression: {
+              type: "StringLiteral",
+              value: "hello",
+            },
+          },
+        ],
+      },
+    ],
+  })
+})
