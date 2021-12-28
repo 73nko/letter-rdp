@@ -195,3 +195,86 @@ test("A program with a blockStatement", () => {
     ],
   })
 })
+
+test("A program with a blockStatement empty", () => {
+  const parser = new Parser()
+  const program = `
+  {
+
+  }
+
+`
+  const ast = parser.parse(program)
+
+  expect(ast).toEqual({
+    type: "Program",
+    body: [
+      {
+        type: "BlockStatement",
+        body: [],
+      },
+    ],
+  })
+})
+
+test("A program with nested blockStatements", () => {
+  const parser = new Parser()
+  const program = `
+  {
+    42;
+    {
+      "hello";
+    }
+  }
+
+`
+  const ast = parser.parse(program)
+
+  expect(ast).toEqual({
+    type: "Program",
+    body: [
+      {
+        type: "BlockStatement",
+        body: [
+          {
+            type: "ExpressionStatement",
+            expression: {
+              type: "NumericalLiteral",
+              value: 42,
+            },
+          },
+          {
+            type: "BlockStatement",
+            body: [
+              {
+                type: "ExpressionStatement",
+                expression: {
+                  type: "StringLiteral",
+                  value: "hello",
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  })
+})
+
+test("A program with an empty statement", () => {
+  const parser = new Parser()
+  const program = `
+  ;
+
+`
+  const ast = parser.parse(program)
+
+  expect(ast).toEqual({
+    type: "Program",
+    body: [
+      {
+        type: "EmptyStatement",
+      },
+    ],
+  })
+})

@@ -65,10 +65,19 @@ class Parser {
    */
   Statement() {
     switch (this._lookahead.type) {
+      case this._tokenizer.TokenType.SEMICOLON:
+        return this.EmptyStatement()
       case this._tokenizer.TokenType.CURLY_OPEN:
         return this.BlockStatement()
       default:
         return this.ExpressionStatement()
+    }
+  }
+
+  EmptyStatement() {
+    this._eat(this._tokenizer.TokenType.SEMICOLON)
+    return {
+      type: "EmptyStatement",
     }
   }
 
