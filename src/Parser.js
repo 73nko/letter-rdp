@@ -118,7 +118,72 @@ class Parser {
    * : Expression ';'
    */
   Expression() {
-    return this.Literal()
+    return this.AdditiveExpression()
+  }
+
+  /**
+   * Additive Expression
+   *  : MultiplicativeExpression
+   * |  AdditiveExpression ADDITIVE_OPERATOR MultiplicativeExpression -> MultiplicativeExpression ADDITIVE_OPERATOR AdditiveExpression
+   */
+  AdditiveExpression() {
+    return this._BinaryExpression(
+      "MultiplicativeExpression",
+      this._tokenizer.TokenType.ADDITIVE_OPERATOR
+    )
+  }
+
+  /**
+   * MultiplicativeExpression
+   * : NumericalLiteral
+   * |  MultiplicativeExpression MULTIPLICATIVE_OPERATOR NumericalLiteral -> NumericalLiteral MULTIPLICATIVE_OPERATOR <MultiplicativeExpression>
+   */
+  MultiplicativeExpression() {
+    return this._BinaryExpression(
+      "PrimaryExpression",
+      this._tokenizer.TokenType.MULTIPLICATIVE_OPERATOR
+    )
+  }
+
+  /**
+   * PrimaryExpression
+   * : Literal
+   */
+  PrimaryExpression() {
+    switch (this._lookahead.type) {
+      case this._tokenizer.TokenType.PARENTHESIS_OPEN:
+        return this.ParenthesizedExpression()
+      default:
+        return this.Literal()
+    }
+  }
+
+  _BinaryExpression(builderName, operatorToken) {
+    let left = this[builderName]()
+    while (this._lookahead.type === operatorToken) {
+      const operator = this._eat(operatorToken).value
+
+      const right = this[builderName]()
+      left = {
+        type: "BinaryExpression",
+        operator,
+        left,
+        right,
+      }
+    }
+
+    return left
+  }
+
+  /**
+   * ParenthesizedExpression
+   * : '(' Expression ')'
+   */
+  ParenthesizedExpression() {
+    this._eat(this._tokenizer.TokenType.PARENTHESIS_OPEN)
+    const expression = this.Expression()
+    this._eat(this._tokenizer.TokenType.PARENTHESIS_CLOSE)
+    return expression
   }
 
   /**

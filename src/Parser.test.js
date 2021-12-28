@@ -278,3 +278,135 @@ test("A program with an empty statement", () => {
     ],
   })
 })
+
+test("A program with an AdditiveExpression", () => {
+  const parser = new Parser()
+  const program = ` 42 + 42;`
+  const ast = parser.parse(program)
+
+  expect(ast).toEqual({
+    type: "Program",
+    body: [
+      {
+        type: "ExpressionStatement",
+        expression: {
+          type: "BinaryExpression",
+          operator: "+",
+          left: {
+            type: "NumericalLiteral",
+            value: 42,
+          },
+          right: {
+            type: "NumericalLiteral",
+            value: 42,
+          },
+        },
+      },
+    ],
+  })
+})
+
+test("A program with a complex AdditiveExpression", () => {
+  const parser = new Parser()
+  const program = `42 + 42 - 10;`
+  const ast = parser.parse(program)
+
+  expect(ast).toEqual({
+    type: "Program",
+    body: [
+      {
+        type: "ExpressionStatement",
+        expression: {
+          type: "BinaryExpression",
+          operator: "-",
+          left: {
+            type: "BinaryExpression",
+            operator: "+",
+            left: {
+              type: "NumericalLiteral",
+              value: 42,
+            },
+            right: {
+              type: "NumericalLiteral",
+              value: 42,
+            },
+          },
+          right: {
+            type: "NumericalLiteral",
+            value: 10,
+          },
+        },
+      },
+    ],
+  })
+})
+
+test("A program with a complex Multiplication Expression", () => {
+  const parser = new Parser()
+  const program = `2 + 2 * 2;`
+  const ast = parser.parse(program)
+
+  expect(ast).toEqual({
+    type: "Program",
+    body: [
+      {
+        type: "ExpressionStatement",
+        expression: {
+          type: "BinaryExpression",
+          operator: "+",
+          left: {
+            type: "NumericalLiteral",
+            value: 2,
+          },
+          right: {
+            type: "BinaryExpression",
+            operator: "*",
+            left: {
+              type: "NumericalLiteral",
+              value: 2,
+            },
+            right: {
+              type: "NumericalLiteral",
+              value: 2,
+            },
+          },
+        },
+      },
+    ],
+  })
+})
+
+test("A program with a complex Multiplication Expression with parenthesis", () => {
+  const parser = new Parser()
+  const program = `(2 + 2) * 2;`
+  const ast = parser.parse(program)
+
+  expect(ast).toEqual({
+    type: "Program",
+    body: [
+      {
+        type: "ExpressionStatement",
+        expression: {
+          type: "BinaryExpression",
+          operator: "*",
+          left: {
+            type: "BinaryExpression",
+            operator: "+",
+            left: {
+              type: "NumericalLiteral",
+              value: 2,
+            },
+            right: {
+              type: "NumericalLiteral",
+              value: 2,
+            },
+          },
+          right: {
+            type: "NumericalLiteral",
+            value: 2,
+          },
+        },
+      },
+    ],
+  })
+})

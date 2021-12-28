@@ -15,12 +15,19 @@ const Spec = [
   [/^{/, "{"],
   [/^}/, "}"],
 
+  [/^\(/, "("],
+  [/^\)/, ")"],
+
   // Numbers
   [/^\d+/, "Number"],
 
   // Strings
   [/^"([^"]*)"/, "String"],
   [/^'([^']*)'/, "String"],
+
+  // Math operators
+  [/^[+\-]/, "ADDITIVE_OPERATOR"],
+  [/^[*\/]/, "MULTIPLICATIVE_OPERATOR"],
 ]
 
 /**
@@ -37,6 +44,10 @@ class Tokenizer {
     SEMICOLON: ";",
     CURLY_OPEN: "{",
     CURLY_CLOSE: "}",
+    PARENTHESIS_OPEN: "(",
+    PARENTHESIS_CLOSE: ")",
+    ADDITIVE_OPERATOR: "ADDITIVE_OPERATOR",
+    MULTIPLICATIVE_OPERATOR: "MULTIPLICATIVE_OPERATOR",
   }
 
   /**
