@@ -10,6 +10,9 @@ const Spec = [
   [/^\/\*[\s\S]*?\*\//, null],
   [/^\/\/.*/, null],
 
+  // Symbols
+  [/^;/, ";"],
+
   // Numbers
   [/^\d+/, "Number"],
 
@@ -24,6 +27,13 @@ const Spec = [
  * Lazily pulls a token from a stream.
  */
 class Tokenizer {
+  TokenType = {
+    WHITESPACE: "Whitespace",
+    COMMENT: "Comment",
+    NUMBER: "Number",
+    STRING: "String",
+    SEMICOLON: ";",
+  }
   /**
    * Initializes the string.
    */

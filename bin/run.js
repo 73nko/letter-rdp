@@ -1,7 +1,17 @@
 const { Parser } = require("../src/Parser")
 
 const parser = new Parser()
-const program = `"hello"`
+const program = `
+/*
+* test comments:
+*/
+
+'hello';
+
+// Number
+42;
+
+`
 const ast = parser.parse(program)
 
 // eslint-disable-next-line no-console
